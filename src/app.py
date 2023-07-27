@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from sst import transcribe
+from stt import transcribe
 from tts import speak
 
 app = Flask(__name__)

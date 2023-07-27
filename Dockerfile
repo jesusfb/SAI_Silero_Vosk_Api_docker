@@ -78,9 +78,16 @@ RUN mkdir /home/silero-user/silero
 
 RUN mkdir /home/silero-user/silero/src
 
+RUN mkdir /home/silero-user/silero/src/model
+
 RUN cd /home/silero-user/silero
 
 ADD src/app.py /home/silero-user/silero/src
+ADD src/tts.py /home/silero-user/silero/src
+ADD src/stt.py /home/silero-user/silero/src
+
+#COPY model/vosk/complete /home/silero-user/silero/src/model
+COPY model/vosk/complete/small/model /home/silero-user/silero/src/model
 
 # ----------------------------- Сборка Rest-api:
 
