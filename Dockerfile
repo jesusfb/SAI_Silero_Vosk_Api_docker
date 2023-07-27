@@ -67,9 +67,12 @@ RUN python3 -m pip install vosk
 #RUN python3 -m pip install sounddevice
 
 # Сервер Flask:
-RUN python3 -m pip install flask
+#RUN python3 -m pip install flask
 
-RUN python3 -m pip install fastapi
+# FastApi
+RUN python3 -m pip install pydantic uvicorn[standard] fastapi
+
+RUN python3 -m pip install torch torchvision torchaudio
 
 # Update user password:
 RUN echo 'silero-user:admin' | chpasswd
@@ -78,16 +81,18 @@ RUN mkdir /home/silero-user/silero
 
 RUN mkdir /home/silero-user/silero/src
 
-RUN mkdir /home/silero-user/silero/src/model
+RUN mkdir /home/silero-user/silero/model
 
 RUN cd /home/silero-user/silero
 
-ADD src/app.py /home/silero-user/silero/src
-ADD src/tts.py /home/silero-user/silero/src
-ADD src/stt.py /home/silero-user/silero/src
+# Тут переместить app.py в корень (для fastapi, все переезжает в папку до src)
+#ADD src/app.py /home/silero-user/silero/src
+ADD src/flask/fast.py /home/silero-user/silero/src
+ADD src/tts.py /home/silero-user/silero/
+ADD src/stt.py /home/silero-user/silero/
 
 #COPY model/vosk/complete /home/silero-user/silero/src/model
-COPY model/vosk/complete/small/model /home/silero-user/silero/src/model
+COPY model/vosk/complete/small/model /home/silero-user/silero/model
 
 # ----------------------------- Сборка Rest-api:
 
@@ -111,10 +116,13 @@ COPY model/vosk/complete/small/model /home/silero-user/silero/src/model
 #RUN export PORT=5000
 
 # Preparing for login
-ENV HOME /home/silero-user/silero/src
+ENV HOME /home/silero-user/silero/
+# ENV HOME /home/silero-user/silero/src
 WORKDIR ${HOME}
 USER silero-user
-CMD python3 app.py --host=0.0.0.0
+#CMD python3 app.py --host=0.0.0.0
+
+CMD uvicorn src.fast:app --host 0.0.0.0 --port 8000 --reload
 
 #CMD python -m silero_api_server
 #CMD python3 -m flask run --host=0.0.0.0
@@ -122,7 +130,7 @@ CMD python3 app.py --host=0.0.0.0
 
 # Docker:
 # docker build -t sai .
-# docker run -it -dit --name sai -p 8000:8000  --gpus all --restart unless-stopped sai:latest
+# docker run -it -dit --name sai -p 8089:8089  --gpus all --restart unless-stopped sai:latest
 
 # Debug:
 # docker container attach sai

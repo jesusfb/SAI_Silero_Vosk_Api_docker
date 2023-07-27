@@ -4,6 +4,11 @@ from tts import speak
 
 app = Flask(__name__)
 
+@app.route('/test', methods=['GET'])
+def test():
+  print("Тестовый запрос получен.")
+
+
 @app.route('/transcribe', methods=['POST'])
 def transcribe_endpoint():
 
@@ -25,4 +30,6 @@ def tts_endpoint():
   return Response(audio, mimetype='audio/wav')
 
 if __name__ == "__main__":
-    app.run()
+  print("load app")
+  app.run(host='0.0.0.0', port=8089)
+  print("app ready to work.")

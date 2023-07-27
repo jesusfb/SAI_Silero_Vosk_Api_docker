@@ -2,16 +2,36 @@ import torch
 import torchaudio
 import io
 
+print("tts: silero module start initialize.")
+
+language = 'ru'
+model_id = 'ru_v3'
+sample_rate = 48000 # 48000
+speaker = 'aidar' # aidar, baya, kseniya, xenia, random
+put_accent = True
+put_yo = True
+device = torch.device('cpu') # cpu или gpu
+
+
 SPEAKERS = ['aidar', 'kseniya', 'baya']
 
 # Словарь для хранения моделей
 models = {}
 
+model, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
+                                  model='silero_tts',
+                                  language='ru',
+                                  speaker='kseniya')
+model.to(device)
+
+print("tts: silero complete loading model")
+
 
 # Загрузка моделей при импорте
 def load_models():
-    device = torch.device('cpu')
+    device = torch.device("cpu")
 
+    print("tts: start loading models")
     for speaker in SPEAKERS:
         model, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
                                   model='silero_tts',
@@ -19,6 +39,7 @@ def load_models():
                                   speaker=speaker)
         model.to(device)
         models[speaker] = model
+        print("tts: silero complete loading model: " + speaker)
 
 
 # Метод синтеза речи
@@ -42,4 +63,6 @@ def speak(text, speaker=None):
 
 
 # Загрузка моделей
-load_models()
+#load_models()
+
+print("tts: silero module complete initialize.")

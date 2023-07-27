@@ -1,12 +1,16 @@
 import vosk
 import json
 
+print("sst: vosk module initialize start.")
+
 model = vosk.Model("model")
 samplerate = 16000
 device = 1
 
 # Распознаватель Kaldi
 rec = vosk.KaldiRecognizer(model, 16000)
+
+print("sst: vosk module initialize complete.")
 
 
 # Метод распознавания
