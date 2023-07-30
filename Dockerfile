@@ -96,9 +96,9 @@ COPY model/vosk/complete/small4/model /home/silero-user/silero/model
 
 # ----------------------------- Сборка Rest-api:
 # Clone the repository
-RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/silero/sm/ && \
-    cd /home/silero-user/silero/sm/ && \
-    python3 -m pip install -r /home/silero-user/silero/sm/requirements.txt
+#RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/silero/sm/ && \
+#    cd /home/silero-user/silero/sm/ && \
+#    python3 -m pip install -r /home/silero-user/silero/sm/requirements.txt
 
 # установка api
 #RUN pip3 install silero-api-server
@@ -106,14 +106,16 @@ RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/si
 #RUN mkdir /home/silero-user/silero/example
 #ADD src/example /home/silero-user/silero/example
 
-RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/silero/api/ && \
-    git pullchmod 777 /home/silero-user/silero/api && \
-    python3 -m pip install -r /home/silero-user/silero/api/requirements.txt
+#RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/silero/api/ && \
+#    git pull && \
+#    chmod 777 /home/silero-user/silero/api && \
+#    python3 -m pip install -r /home/silero-user/silero/api/requirements.txt
 
 # (Optional) Set PORT environment variable
 #RUN export PORT=5000
 
 # Preparing for login
+RUN chmod 777 /home/silero-user/silero
 ENV HOME /home/silero-user/silero/
 # ENV HOME /home/silero-user/silero/src
 WORKDIR ${HOME}
