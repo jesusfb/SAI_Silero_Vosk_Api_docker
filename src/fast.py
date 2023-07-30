@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, Response
 from pydantic import BaseModel
 from stt import transcribe
-from tts import speak
+#from tts import speak
 
 app = FastAPI()
 
@@ -14,22 +14,18 @@ class TTSRequest(BaseModel):
     text: str
     speaker: str
 
+@app.get("/")
+async def hello():
+    return {"hello": "from SAI"}
 
 @app.post("/transcribe")
-async def transcribe(request: TranscribeRequest):
+async def transcribes(request: TranscribeRequest):
     audio = request.audio
-    text = transcribe(audio)
+    text = await transcribe(audio)
     return {"text": text}
 
 
-@app.post("/tts")
-async def tts(request: TTSRequest):
-    audio = speak(request.text, request.speaker)
-    return Response(audio, media_type="audio/mpeg")
-
-
-if __name__ == "__main__":
-    print("FastAPI starting")
-    import uvicorn
-
-    uvicorn.run("app:app", port=8000)
+#@app.post("/tts")
+#async def tts(request: TTSRequest):
+#    audio = speak(request.text, request.speaker)
+#    return Response(audio, media_type="audio/mpeg")

@@ -87,20 +87,18 @@ RUN cd /home/silero-user/silero
 
 # Тут переместить app.py в корень (для fastapi, все переезжает в папку до src)
 #ADD src/app.py /home/silero-user/silero/src
-ADD src/flask/fast.py /home/silero-user/silero/src
+ADD src/fast.py /home/silero-user/silero/src
 ADD src/tts.py /home/silero-user/silero/
 ADD src/stt.py /home/silero-user/silero/
 
 #COPY model/vosk/complete /home/silero-user/silero/src/model
-COPY model/vosk/complete/small/model /home/silero-user/silero/model
+COPY model/vosk/complete/small4/model /home/silero-user/silero/model
 
 # ----------------------------- Сборка Rest-api:
-
 # Clone the repository
-#RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/silero/ && \
-#    git pull && \
-#    chmod 777 /home/silero-user/silero && \
-#    python3 -m pip install -r /home/silero-user/silero/requirements.txt
+RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/silero/sm/ && \
+    cd /home/silero-user/silero/sm/ && \
+    python3 -m pip install -r /home/silero-user/silero/sm/requirements.txt
 
 # установка api
 #RUN pip3 install silero-api-server
@@ -108,9 +106,9 @@ COPY model/vosk/complete/small/model /home/silero-user/silero/model
 #RUN mkdir /home/silero-user/silero/example
 #ADD src/example /home/silero-user/silero/example
 
-#RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/silero/api/ && \
-#    git pullchmod 777 /home/silero-user/silero/api && \
-#    python3 -m pip install -r /home/silero-user/silero/api/requirements.txt
+RUN git clone https://github.com/snakers4/silero-models.git /home/silero-user/silero/api/ && \
+    git pullchmod 777 /home/silero-user/silero/api && \
+    python3 -m pip install -r /home/silero-user/silero/api/requirements.txt
 
 # (Optional) Set PORT environment variable
 #RUN export PORT=5000
@@ -122,7 +120,7 @@ WORKDIR ${HOME}
 USER silero-user
 #CMD python3 app.py --host=0.0.0.0
 
-CMD uvicorn src.fast:app --host 0.0.0.0 --port 8000 --reload
+CMD uvicorn src.fast:app --host 0.0.0.0 --port 8083 --reload
 
 #CMD python -m silero_api_server
 #CMD python3 -m flask run --host=0.0.0.0
@@ -130,7 +128,7 @@ CMD uvicorn src.fast:app --host 0.0.0.0 --port 8000 --reload
 
 # Docker:
 # docker build -t sai .
-# docker run -it -dit --name sai -p 8089:8089  --gpus all --restart unless-stopped sai:latest
+# docker run -it -dit --name sai -p 8083:8083  --gpus all --restart unless-stopped sai:latest
 
 # Debug:
 # docker container attach sai
