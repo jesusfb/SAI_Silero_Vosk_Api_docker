@@ -92,7 +92,7 @@ ADD src/tts.py /home/silero-user/silero/
 ADD src/stt.py /home/silero-user/silero/
 
 #COPY model/vosk/complete /home/silero-user/silero/src/model
-COPY model/vosk/complete/small4/model /home/silero-user/silero/model
+#COPY model/vosk/complete/small4/model /home/silero-user/silero/model
 
 # ----------------------------- Сборка Rest-api:
 # Clone the repository
